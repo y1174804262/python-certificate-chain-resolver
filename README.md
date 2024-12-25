@@ -1,3 +1,5 @@
+# 相较原版，将解析结果输出为pem格式
+
 # Python certificate chain resolver
 
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
