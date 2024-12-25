@@ -5,10 +5,9 @@ from cert_chain_resolver.models import Cert
 try:
     from typing import TYPE_CHECKING
 
-    if TYPE_CHECKING:  # pragma: no cover
+    if TYPE_CHECKING:
         from cert_chain_resolver.models import Cert
-except ImportError:  # pragma: no cover
-
+except ImportError:
     pass
 
 
@@ -24,7 +23,13 @@ class CAStore:
         """
         certs = self.find_issuer_candidates(cert)
         try:
-            return next(ca for ca in certs if cert.is_issued_by(ca))
+            for ca in certs:
+                print(ca)
+                print(cert.issuer)
+                if cert.issuer == ca:
+                    print(certs[ca])
+                    return certs[ca]
+            # return next(ca for ca in certs if cert.is_issued_by(ca))
         except StopIteration:
             raise RootCertificateNotFound(
                 "Cant find root cert in {}".format(self.__class__.__name__)
