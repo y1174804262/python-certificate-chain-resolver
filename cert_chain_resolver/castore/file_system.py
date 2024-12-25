@@ -13,9 +13,9 @@ from cert_chain_resolver import __is_py3__
 try:
     from typing import TYPE_CHECKING
 
-    if TYPE_CHECKING:  # pragma: no cover
+    if TYPE_CHECKING:
         from cert_chain_resolver.models import Cert
-except ImportError:  # pragma: no cover
+except ImportError:
     pass
 
 
@@ -57,7 +57,7 @@ class FileSystemStore(CAStore):
         if not self._cache:
             self._populate_cache()
 
-        return self._cache.get(cert.issuer, [])
+        return self._cache
 
     def _populate_cache(self):
         # type: () -> None
@@ -69,7 +69,7 @@ class FileSystemStore(CAStore):
                 elif line == b"-----END CERTIFICATE-----\n":
                     cert_buffer.extend(line)
                     root = Cert.load(bytes(cert_buffer))
-                    self._cache[root.subject].append(root)
+                    self._cache[root.subject].append(cert_buffer)
                     cert_buffer = bytearray()
                 else:
                     cert_buffer.extend(line)
